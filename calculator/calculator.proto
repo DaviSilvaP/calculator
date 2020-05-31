@@ -1,0 +1,40 @@
+// protoc --go_out=plugins=grpc:. --go_opt=paths=source_relative calculator/calculator.proto
+// export PATH="$PATH:$(go env GOPATH)/bin"
+
+syntax = "proto3";
+
+option go_package = "github.com/DaviSilvaP/calculator/calculator";
+
+package calculator;
+
+// Gera o serviço da calculadora
+service Calculator {
+	// Função RPC
+	rpc SumC (NumRequest) returns (NumReply) {}
+	rpc SubC (NumRequest) returns (NumReply) {}
+	rpc MultC (NumRequest) returns (NumReply) {}
+	rpc DivC (NumRequest) returns (NumReply) {}
+
+	rpc SumEC (stream NumSRequest) returns (NumReply) {}
+	rpc SubEC (stream NumSRequest) returns (NumReply) {}
+	rpc MultEC (stream NumSRequest) returns (NumReply) {}
+	rpc DivEC (stream NumSRequest) returns (NumReply) {}
+
+	rpc AllCalcs (NumRequest) returns (stream NumReply) {}
+	rpc AllCalcsE (stream NumSRequest) returns (stream NumReply) {}
+}
+
+// Recebe os valores para a soma
+message NumRequest {
+	double a = 1;
+	double b = 2;
+}
+
+message NumSRequest {
+	double num = 1;
+}
+
+// Envia o resultado da soma
+message NumReply {
+	double result = 3;
+}
